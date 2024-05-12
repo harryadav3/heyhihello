@@ -15,12 +15,16 @@ import {
 import Cookies from "js-cookie";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { searchUsers , addFriend } from "@/lib/api";
+import { searchUsers , addUserFriend } from "@/lib/api";
 // import { user } from '@/app/data/data';
 import useUserStore from "@/store/userStore";
 import { any } from "zod";
+
+
+
+
 export default function Profile() {
-const { user } = useUserStore();
+const { user , addFriend } = useUserStore();
 const [searchquery, setSearchQuery] = useState<string>("");
 const [searchResults, setSearchResults] = useState<{ id: string, name: string }[]>([]);
 
@@ -39,8 +43,10 @@ const handleSearch = async () => {
 const handleAddFriend =   () => {
     console.log("user from profile: ", user?.id  , searchResults[0].id);
     if (user?.id && searchResults[0]?.id) {
-        addFriend(user.id, searchResults[0].id, Cookies.get("token") ?? "").then((res) => {
+        addUserFriend(user.id, searchResults[0].id, Cookies.get("token") ?? "").then((res) => {
             console.log("res from add friend: ", res);
+                    addFriend(res.data.friend);
+
         }).catch((error) => {
             console.error(error);
         });

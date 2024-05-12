@@ -39,7 +39,7 @@ export const registerUser = async (name: string, email: string, password: string
     }
 };
 
-export const addFriend = async (userId: string, friendId: string, token: string) => {
+export const addUserFriend = async (userId: string, friendId: string, token: string) => {
   try {
     const response = await api.put(`/users/${userId}/friends`, { friendId }, {
       headers: {
@@ -104,6 +104,19 @@ export const searchUsers = async (search: string, token: string) => {
   }
 };
 
+export const getMessagesBetweenUsers = async (senderId: string, receiverId: string) => {
+    try {
+      const token = Cookies.get('token');
+      const response = await api.post(`/chats/between/${senderId}`, { receiverId }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to fetch messages');
+    }
+  };
 
 export const logout = () => {
     useUserStore.getState().logout();

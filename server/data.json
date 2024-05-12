@@ -1,0 +1,144 @@
+{
+  "v": 2,
+  "name": "heyhi",
+  "folders": [],
+  "requests": [
+    {
+      "auth": { "authActive": true, "authType": "inherit" },
+      "headers": [],
+      "endpoint": "http://localhost:3001/",
+      "body": { "body": null, "contentType": null },
+      "params": [],
+      "requestVariables": [],
+      "v": "4",
+      "name": "Hello world",
+      "method": "GET",
+      "testScript": "",
+      "preRequestScript": ""
+    },
+    {
+      "headers": [],
+      "params": [],
+      "auth": { "authType": "inherit", "authActive": true },
+      "endpoint": "http://localhost:3001/api/auth/signup",
+      "v": "4",
+      "body": {
+        "contentType": "application/json",
+        "body": "{\n  \"name\":\"harry\",\n  \"email\":\"harry123@gmail.com\",\n  \"password\": \"password\"\n}"
+      },
+      "testScript": "",
+      "preRequestScript": "",
+      "name": "Sign up user",
+      "method": "POST",
+      "requestVariables": []
+    },
+    {
+      "endpoint": "http://localhost:3001/api/auth/login",
+      "auth": { "token": "{{jwt}}", "authActive": true, "authType": "bearer" },
+      "testScript": "const jsonData = pw.response.body; // Save the JSON payload response\n\npw.env.set(\"jwt\", jsonData.token); ",
+      "preRequestScript": "",
+      "body": {
+        "body": "{\n  \"email\":\"harry123@gmail.com\",\n  \"password\": \"password\"\n}",
+        "contentType": "application/json"
+      },
+      "requestVariables": [],
+      "name": "login fo ruser",
+      "params": [],
+      "headers": [],
+      "method": "POST",
+      "v": "4"
+    },
+    {
+      "body": { "contentType": null, "body": null },
+      "auth": { "token": "<<jwt>>", "authActive": true, "authType": "bearer" },
+      "testScript": "",
+      "requestVariables": [],
+      "headers": [],
+      "endpoint": "http://localhost:3001/api/users/search?search=olivia",
+      "preRequestScript": "",
+      "method": "GET",
+      "params": [],
+      "v": "4",
+      "name": "serach a user by name"
+    },
+    {
+      "requestVariables": [],
+      "auth": { "authActive": true, "token": "<<jwt>>", "authType": "bearer" },
+      "method": "PUT",
+      "name": "To Add a Friend",
+      "body": {
+        "body": "{\n  \"friendId\": \"663fdbaa1efd1f0a29f9c740\"\n}",
+        "contentType": "application/json"
+      },
+      "headers": [],
+      "endpoint": "http://localhost:3001/api/users/663fca6f98e194d663df056c/friends",
+      "testScript": "",
+      "params": [],
+      "preRequestScript": "",
+      "v": "4"
+    },
+    {
+      "params": [],
+      "requestVariables": [],
+      "testScript": "",
+      "auth": { "authActive": true, "token": "<<jwt>>", "authType": "bearer" },
+      "preRequestScript": "",
+      "v": "4",
+      "body": {
+        "body": "{\n  \"status\": \"BUSY\"\n}",
+        "contentType": "application/json"
+      },
+      "method": "PUT",
+      "endpoint": "http://localhost:3001/api/users/663fca6f98e194d663df056c/status",
+      "headers": [],
+      "name": "To change the status of user"
+    },
+    {
+      "v": "4",
+      "endpoint": "http://localhost:3001/api/chats/",
+      "body": {
+        "body": "{\n  \"sender\" :\"663fca6f98e194d663df056c\",\n  \"receiver\" : \"663fdbaa1efd1f0a29f9c740\",\n  \"content\" : \"Hello how are you \"\n}",
+        "contentType": "application/json"
+      },
+      "headers": [],
+      "testScript": "",
+      "params": [],
+      "preRequestScript": "",
+      "requestVariables": [],
+      "method": "POST",
+      "auth": { "authType": "bearer", "authActive": true, "token": "<<jwt>>" },
+      "name": "Send to messae from S ot R"
+    },
+    {
+      "v": "4",
+      "params": [],
+      "body": { "contentType": null, "body": null },
+      "auth": { "authActive": true, "token": "<<jwt>>", "authType": "bearer" },
+      "endpoint": "http://localhost:3001/api/chats/663fca6f98e194d663df056c",
+      "method": "GET",
+      "headers": [],
+      "name": "To Get messages fo  a user",
+      "preRequestScript": "",
+      "testScript": "",
+      "requestVariables": []
+    },
+    {
+      "params": [],
+      "auth": { "authActive": true, "authType": "inherit" },
+      "headers": [],
+      "requestVariables": [],
+      "endpoint": "http://localhost:3001/api/chats/between/",
+      "method": "GET",
+      "testScript": "",
+      "v": "4",
+      "preRequestScript": "",
+      "body": {
+        "contentType": "application/json",
+        "body": "{\n  \"receiverId\": \"\"\n}"
+      },
+      "name": "get messages between users"
+    }
+  ],
+  "auth": { "authType": "none", "authActive": true },
+  "headers": []
+}

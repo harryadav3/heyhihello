@@ -1,13 +1,6 @@
 // src/store/messageStore.ts
 import {create} from 'zustand';
-
-interface Message {
-  id: string;
-  sender: string;
-  receiver: string;
-  content: string;
-  timestamp: string;
-}
+import { Message } from '@/app/types/types';
 
 interface MessageState {
   messages: Message[];
