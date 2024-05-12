@@ -19,8 +19,16 @@ export const registerUser = async (req: Request, res: Response) => {
     const newUser = new User({ name, email, password: hashedPassword });
     const savedUser = await newUser.save();
 
-    res.status(201).json({ status : "user created succefullly",
-    user: savedUser });
+    res.status(201).json({ 
+      status: "user created successfully",
+      user: {
+      id: savedUser._id,
+      name: savedUser.name,
+      email: savedUser.email,
+      friends: savedUser.friends,
+      status: savedUser.status
+      }
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
@@ -31,7 +39,7 @@ export const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
@@ -46,7 +54,12 @@ export const loginUser = async (req: Request, res: Response) => {
       expiresIn: "1d",
     });
 
-    res.status(200).json({ status: "success", token });
+
+    const { _id,  name , friends , status } = user;
+
+    res.status(200).json({ status: "success", 
+    user: { id:_id, name , email, friends , status },
+    token });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error",

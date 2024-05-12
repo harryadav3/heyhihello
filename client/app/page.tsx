@@ -2,8 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button} from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-
+import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 export default function Home() {
+  
   return (
 
     <main className="flex min-h-screen flex-col items-center justify-between p-24">

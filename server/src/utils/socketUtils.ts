@@ -89,10 +89,10 @@ const socketHandler = (socket: any) => {
 
   // Authenticate the user
   socket.on("authenticate", (data: AuthenticateData) => {
-    console.log(data);
+    // console.log(data);
     const { token } = data;
     // const token = data.token;
-    console.log(token);
+    // console.log(token);
     try {
       jwt.verify(token, process.env.JWT_SECRET!, (err, user) => {
         if (err) {

@@ -16,32 +16,63 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
+import useUserStore from "@/store/userStore"
+import { loginUser } from "@/lib/api"
+import { useRouter } from "next/navigation"
+import { useToast } from "@/components/ui/use-toast"
+
+
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  email : z.string().email({
+    message: "Please enter a valid email address.",
   }),
   password: z.string().min(6, {
     message: "Password must be at least 6 characters.",
   }),
 })
 
-export default function ProfileForm() {
+export default function LoginForm() {
   // ...
+  const router = useRouter()
+  const { toast } = useToast();
  // 1. Define your form.
  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   })
  
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values)
+
+   loginUser(values.email , values.password).then((res) => {
+
+    if(res){
+
+         console.log(res)
+         
+         toast({
+                title: "Login Success",
+                description: "You have successfully logged in",
+            
+         })
+         router.push("/chat")
+    }
+    }).catch((err) => {
+        console.log(err)
+        toast({
+            variant:"destructive",
+            title: "Login Failed",
+            description: "Please check your email and password",
+    });
+
   }
+    )
+    }
+
   return (
     <Card className="p-6 min-w-96   "> 
     <div className="text-center">
@@ -52,7 +83,7 @@ export default function ProfileForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="username"
+          name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>

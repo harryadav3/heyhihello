@@ -1,5 +1,4 @@
 
-
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -19,9 +18,19 @@ import {
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import Link from "next/link"
+import { registerUser } from "@/lib/api"
+import { useRouter } from "next/navigation"
+import useUserStore from "@/store/userStore"
+import { use } from "react"
+import { useToast } from "@/components/ui/use-toast"
+
+
 const formSchema = z.object({
-  username: z.string().min(2, {
+  name: z.string().min(2, {
     message: "Username must be at least 2 characters.",
+  }),
+  email: z.string().email({
+    message: "Please enter a valid email address.",
   }),
   password: z.string().min(6, {
     message: "Password must be at least 6 characters.",
@@ -30,12 +39,16 @@ const formSchema = z.object({
 
 export default function SignupForm() {
   // ...
+  const { setUser } = useUserStore()
+  const router = useRouter()
+  const { toast } = useToast();
  // 1. Define your form.
  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      name: "",
       password: "",
+      email:"",
     },
   })
  
@@ -43,7 +56,29 @@ export default function SignupForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    const { name , email , password } = values
+    // console.log("values from signup: ", values)
+    registerUser(name , email , password).then((res) => {
+        console.log(res)
+        // const { token, ...user } = res.data
+        // console.log(user)
+        // setUser({ ...user , token})
+        if(res){
+            console.log("user created")
+            toast({
+                
+                description: "Registration successful",
+            })
+            router.push("/auth/login")
+        }
+    }).catch((error) => {
+        toast({
+            variant: "destructive",
+            title: "Registration failed",
+            description:" Some Error occurent please try again"
+        })
+        console.log(error)
+    });
   }
   return (
     <Card className="p-6 min-w-96   "> 
@@ -55,7 +90,7 @@ export default function SignupForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="password"
+          name="name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Name</FormLabel>
@@ -68,7 +103,7 @@ export default function SignupForm() {
         />
         <FormField
           control={form.control}
-          name="username"
+          name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
@@ -94,7 +129,7 @@ export default function SignupForm() {
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="password"
           render={({ field }) => (
@@ -107,7 +142,7 @@ export default function SignupForm() {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
         <Button className="w-full " type="submit">Submit</Button>
 
         <div className="  italic text-center ">
