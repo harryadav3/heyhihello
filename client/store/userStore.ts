@@ -2,14 +2,7 @@
 import {create} from 'zustand';
 import { persist } from 'zustand/middleware';
 import Cookies from 'js-cookie';
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  friends: string[];
-  status: 'AVAILABLE' |  'BUSY';
-}
+import { User } from '@/app/types/types';
 
 interface UserState {
   user: User | null;

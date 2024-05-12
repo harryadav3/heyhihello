@@ -30,9 +30,9 @@ export const registerUser = async (name: string, email: string, password: string
   export const loginUser = async (email: string, password: string) => {
     try {
       const response = await api.post('/auth/login', { email, password });
-      const { token, ...user } = response.data;
+      const { token, user } = response.data;
       Cookies.set('token', token);
-      useUserStore.getState().setUser({ ...user, friends: [], status: 'ONLINE' });
+      useUserStore.getState().setUser( user );
       return response.data;
     } catch (error) {
       throw new Error('Login failed');
