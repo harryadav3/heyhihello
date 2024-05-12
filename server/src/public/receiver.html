@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <script>
+      var socket = io("http://localhost:3001"); // replace with your server URL
+
+      socket.on("connect", function () {
+        console.log("Connected to the server");
+
+        // Authenticate the receiver
+        socket.emit("authenticate", {
+          token:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjNmZGJhYTFlZmQxZjBhMjlmOWM3NDAiLCJ1c2VybmFtZSI6Im9saXZpYSIsImVtYWlsIjoib2xpdmlhQGdtYWlsLmNvbSIsImZyaWVuZHMiOiJvbGl2aWFAZ21haWwuY29tIiwic3RhdHVzIjoiQVZBSUxBQkxFIiwiaWF0IjoxNzE1NDcwNzgwLCJleHAiOjE3MTU1NTcxODB9.zlf7RJEjOwzqPHzxpzAR4Ly7M98y7diDT25ztSpwceo",
+        });
+
+        // Listen for the 'receive-message' event
+        socket.on("receive-message", function (message) {
+          console.log("Received a new message:", message);
+        });
+      });
+    </script>
+  </body>
+</html>

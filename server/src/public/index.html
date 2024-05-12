@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Real-time Chat App</title>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <h1>Real-time Chat App</h1>
+    <div>
+      <label for="userName">Your Name:</label>
+      <input type="text" id="userName" />
+    </div>
+    <div>
+      <label for="recipientUser">Recipient:</label>
+      <select id="recipientUser"></select>
+    </div>
+    <div id="messages"></div>
+    <input type="text" id="messageInput" />
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+      const socket = io();
+      let userId;
+      let recipientId;
+
+      const userNameInput = document.getElementById('userName');
+      const recipientSelect = document.getElementById('recipientUser');
+
+      userNameInput.addEventListener('input', () => {
+        const name = userNameInput.value.trim();
+        if (name) {
+          userId = `${name}-${Date.now()}`;
+          socket.emit('online', userId, name);
+        }
+      });
+
+      socket.on('onlineUsers', (users) => {
+        recipientSelect.innerHTML = '';
+        for (const [id, name] of Object.entries(users)) {
+          if (id !== userId) {
+            const option = document.createElement('option');
+            option.value = id;
+            option.textContent = name;
+            recipientSelect.appendChild(option);
+          }
+        }
+      });
+
+      socket.on('message', (message) => {
+        const messageElem = document.createElement('div');
+        messageElem.innerText = `${message.sender}: ${message.content}`;
+        document.getElementById('messages').appendChild(messageElem);
+      });
+
+      function sendMessage() {
+        const messageInput = document.getElementById('messageInput');
+        const content = messageInput.value.trim();
+        if (content && userId && recipientId) {
+          const message = {
+            sender: userId,
+            receiver: recipientId,
+            content,
+          };
+
+          socket.emit('message', message);
+          messageInput.value = '';
+        }
+      }
+
+      recipientSelect.addEventListener('change', () => {
+        recipientId = recipientSelect.value;
+      });
+    </script>
+  </body>
+</html>

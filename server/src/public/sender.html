@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <script>
+      var socket = io("http://localhost:3001"); // replace with your server URL
+
+      socket.on("connect", function () {
+        console.log("Connected to the server");
+
+        // Authenticate the sender
+        socket.emit("authenticate", {
+          token:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjNmY2E2Zjk4ZTE5NGQ2NjNkZjA1NmMiLCJ1c2VybmFtZSI6ImhhcnJ5IiwiZW1haWwiOiJoYXJyeTEyM0BnbWFpbC5jb20iLCJmcmllbmRzIjoiaGFycnkxMjNAZ21haWwuY29tIiwic3RhdHVzIjoiQVZBSUxBQkxFIiwiaWF0IjoxNzE1NDcwNDQyLCJleHAiOjE3MTU1NTY4NDJ9.Uzhi4q8UgkIqJyRt7oONF3SLNWQOIxZIt8n844CJyuY",
+        });
+
+        // Send a private message
+        socket.emit("private-message", {
+          receiver: "663fdbaa1efd1f0a29f9c740",
+          content: "Hello, this is a private message!",
+        });
+
+        // Listen for the 'receive-message' event
+        socket.on("receive-message", function (message) {
+          console.log("Received a new message:", message);
+        });
+      });
+    </script>
+  </body>
+</html>
