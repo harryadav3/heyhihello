@@ -1,14 +1,15 @@
-// src/store/selectedUserStore.ts
-import { create } from 'zustand';
+// src/{store}/selectedUserStore.ts
+import {create} from 'zustand';
+import { Friend } from '@/app/types/types';
 
 interface SelectedUserState {
-  selectedUserId: string | null;
-  setSelectedUserId: (userId: string | null) => void;
+  selectedUser: Friend | null;
+  setSelectedUser: (user: Friend | null) => void;
 }
 
 const useSelectedUserStore = create<SelectedUserState>((set) => ({
-  selectedUserId: null,
-  setSelectedUserId: (userId) => set({ selectedUserId: userId }),
+  selectedUser: null,
+  setSelectedUser: (user) => set({ selectedUser: user }),
 }));
 
 export default useSelectedUserStore;

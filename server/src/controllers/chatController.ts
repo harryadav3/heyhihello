@@ -25,3 +25,22 @@ export const sendMessage = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
+export const getMessagesBetweenUsers = async (req: Request, res: Response) => {
+  const senderId = req.params.senderId;
+  const receiverId = req.body.receiverId;
+  
+  try {
+    const messages = await Message.find({
+      $or: [
+        { sender: senderId, receiver: receiverId },
+        { sender: receiverId, receiver: senderId }
+      ]
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json(messages);
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred while fetching messages' });
+  }
+};
