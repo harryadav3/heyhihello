@@ -76,8 +76,9 @@ let socket: Socket | null = null;
         socket.disconnect();
       };
     }, [user, selectedUser]);
-  
     const sendMessage = (receiver: string, content: string) => {
+      console.log('receiver', receiver);
+      console.log('content', content);
       socket.emit('private-message', { receiver, content });
     };
   

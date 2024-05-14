@@ -45,7 +45,7 @@ const handleAddFriend =   () => {
     if (user?.id && searchResults[0]?.id) {
         addUserFriend(user.id, searchResults[0].id, Cookies.get("token") ?? "").then((res) => {
             console.log("res from add friend: ", res);
-                    addFriend(res.data.friend);
+                    addFriend(res.user);
 
         }).catch((error) => {
             console.error(error);
