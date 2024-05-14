@@ -41,18 +41,21 @@ export default function ChatInterface() {
                 <h2 className="font-bold mb-4">
                   Chat with {selectedUser.name} ({selectedUser.email})
                 </h2>
-                {messages.map((message) => (
+                <div className="flex-col p-4  h-full " >
+                                  {messages.map((message) => (
                   <div
                     key={message.id}
                     className={`${
                       message.sender === user?.id ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'
                     } p-2 rounded mb-2 ${
-                      message.sender === user?.id ? 'self-start' : 'self-end'
-                    }`}
+                      // message.sender === user?.id ? 'self-end' : 'self-start'
+                      message.sender === user?.id ? ' ml-auto' : 'self-start'
+                    }` + " max-w-60 rounded-lg"}
                   >
                     {message.content}
                   </div>
-                ))}
+))}
+</div>
 
                 
               </>
