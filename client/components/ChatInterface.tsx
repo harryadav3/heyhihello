@@ -31,7 +31,9 @@ export default function ChatInterface() {
       }
     }, [selectedUser, user]);
 
-
+    useEffect(() => {
+      setMessages(chatMessages);
+    },[chatMessages]);
 
     return (
         <div className="flex flex-col h-screen">
@@ -62,17 +64,25 @@ export default function ChatInterface() {
             )}
           </div>
           <div className="p-4 bg-white border-t">
-          <input
-        type="text"
-        placeholder="Type your message..."
-        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            sendMessage(selectedUser?._id || '', e.currentTarget.value);
-            e.currentTarget.value = '';
-          }
-        }}
-      />
+            <input
+              type="text"
+              placeholder="Type your message..."
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  const newMessage: Message = {
+                    id: '', // Add the required properties
+                    timestamp: '', // Add the required properties
+                    sender: user?.id || '',
+                    receiver: selectedUser?._id || '',
+                    content: e.currentTarget.value,
+                  };
+                  setMessages((prevMessages) => [...prevMessages, newMessage]);
+                  sendMessage(selectedUser?._id || '', e.currentTarget.value);
+                  e.currentTarget.value = '';
+                }
+              }}
+            />
           </div>
         </div>
       );
